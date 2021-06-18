@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Babylon.js vezbanje</title>
+
+        <!-- Babylon.js -->
+        
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+<body>
+    
+
+
+<!-- <div style="width: 800px; height: 400px; background-color:red;">
+    
+</div> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+    <script src="https://preview.babylonjs.com/ammo.js"></script>
+    <script src="https://preview.babylonjs.com/cannon.js"></script>
+    <script src="https://preview.babylonjs.com/Oimo.js"></script>
+    <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+    <script src="https://preview.babylonjs.com/babylon.js"></script>
+    <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+    <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+    <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+    <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+<div style="width: 100vw; height: 100vh; background-color: black">
+
+<canvas id="renderCanvas" style="width: 100%; height: 100%; touch-action: none; text-align: center; outline: none !important; float: right"></canvas>
+</div>
+        
+
+<script>
+    var canvas = document.getElementById("renderCanvas");
+    var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
+        var createScene = function () {
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+
+    // This creates and positions a free camera (non-mesh)
+ var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 0, new BABYLON.Vector3(0, 0, 0), scene);
+            camera.setPosition(new BABYLON.Vector3(3, 5, -8));
+            camera.attachControl(canvas, true);
+camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius = 8;
+
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
+
+    light.intensity = 0.7;
+    var gui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI");
+  var sat;
+            BABYLON.SceneLoader.ImportMeshAsync("", "https://raw.githubusercontent.com/veljko85/Satovi/gh-pages/", "sat.glb").then((result) => {   
+               sat = result.meshes[0];
+                sat.scaling = new BABYLON.Vector3(-6,6,6);
+                sat.position = new BABYLON.Vector3(0, -8, 0);
+                // sat.stopAnimation(result.meshes[0]);
+
+                var walkAnim = scene.animationGroups.find(a => a.name === 'Curve.001Action');
+                var walkParam = { name: "Walk", anim: walkAnim, weight: 0 };
+                
+                walkAnim.play(true);
+                
+                walkAnim.setWeightForAllAnimatables(1);
+                // walkAnim.start(true, 1, 0.03333333507180214, 0.03333333507180214);
+                console.log(walkAnim)
+
+                var button = BABYLON.GUI.Button.CreateSimpleButton("but0", "stop");
+                button.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+                button.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+                button.paddingTop = "0px";
+                button.width = "100px";
+                button.height = "50px";
+                button.color = "white";
+                button.background = "green";
+                button.onPointerDownObservable.add(function () {
+                    walkAnim.pause(true);
+                })
+                gui.addControl(button);
+                var button1 = BABYLON.GUI.Button.CreateSimpleButton("but0", "run");
+                button1.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+                button1.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+                button1.paddingTop = "0px";
+                button1.width = "100px";
+                button1.height = "50px";
+                button1.color = "white";
+                button1.background = "green";
+                button1.onPointerDownObservable.add(function () {
+                    walkAnim.play(true);
+                })
+                gui.addControl(button1);
+                var slider = new BABYLON.GUI.Slider();
+                slider.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                slider.minimum = 0;
+                slider.maximum = 1;
+                slider.color = "green";
+                 slider.value = 1;
+                slider.height = "20px";
+                slider.width = "205px";
+                gui.addControl(slider);
+                slider.onValueChangedObservable.add((v) => {
+                    walkParam.anim.setWeightForAllAnimatables(v);
+                    walkParam.weight = v;
+				// header.text = param.name + ":" + param.weight.toFixed(2);
+			})
+            // walkParam.anim._slider = slider;
+			// slider.value = walkParam.weight;
+                console.log(walkParam.weight)
+
+            });
+
+
+
+
+    return scene;
+};
+                var engine;
+                var scene;
+                initFunction = async function() {               
+                    var asyncEngineCreation = async function() {
+                        try {
+                        return createDefaultEngine();
+                        } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                        }
+                    }
+
+                    engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        scene = createScene();};
+        initFunction().then(() => {sceneToRender = scene        
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+</script> 
+
+
+</body>
+</html>
