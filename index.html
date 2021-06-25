@@ -55,10 +55,41 @@ camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius = 8;
 scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
 
     light.intensity = 0.7;
+    var d = new Date();
+                var m = d.getMinutes();
+                var h = d.getHours();
+                var s = d.getSeconds();
+                var min = 1.555 - (m * 0.105);
+                var hou = 1.555 - ((h * 0.52) + (0.0095 * m));
+                var sec = 1.555 - (s * 0.105);
+   
+  
+//   console.log(m)
+  
     var gui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI");
   var sat;
             BABYLON.SceneLoader.ImportMeshAsync("", "https://raw.githubusercontent.com/veljko85/Satovi/gh-pages/", "sat.glb").then((result) => {   
                sat = result.meshes[0];
+               let malaKazaljka = scene.getMeshByName("Sat.018");
+               let velikaKazaljka = scene.getMeshByName("Sat.008");
+               let sekundara = scene.getMeshByName("Sat.016");
+               malaKazaljka.rotation = new BABYLON.Vector3(0, hou, 0);
+            velikaKazaljka.rotation = new BABYLON.Vector3(0, min, 0);
+            sekundara.rotation = new BABYLON.Vector3(0, sec, 0);
+            //    malaKazaljka.position = new BABYLON.Vector3(0, -8, 0);
+            setInterval(function(){
+                d = new Date();
+                m = d.getMinutes();
+                h = d.getHours(); 
+                s = d.getSeconds();
+                min = 1.555 - (m* 0.105);
+                hou = 1.555 - ((h * 0.52) + (0.0095 * m));
+                sec = 1.555 - (s * 0.105);
+                malaKazaljka.rotation = new BABYLON.Vector3(0, hou, 0);
+            velikaKazaljka.rotation = new BABYLON.Vector3(0, min, 0);
+            sekundara.rotation = new BABYLON.Vector3(0, sec, 0);
+            }, 1000);
+            
                 sat.scaling = new BABYLON.Vector3(-6,6,6);
                 sat.position = new BABYLON.Vector3(0, -8, 0);
                 // sat.stopAnimation(result.meshes[0]);
@@ -66,54 +97,37 @@ scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
                 var walkAnim = scene.animationGroups.find(a => a.name === 'Curve.001Action');
                 var walkParam = { name: "Walk", anim: walkAnim, weight: 0 };
                 
-                walkAnim.play(true);
+                walkAnim.play(false);
+                walkAnim.pause(true);
                 
                 walkAnim.setWeightForAllAnimatables(1);
                 // walkAnim.start(true, 1, 0.03333333507180214, 0.03333333507180214);
-                console.log(walkAnim)
+                // console.log(walkAnim)
 
-                var button = BABYLON.GUI.Button.CreateSimpleButton("but0", "stop");
-                button.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
-                button.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-                button.paddingTop = "0px";
-                button.width = "100px";
-                button.height = "50px";
-                button.color = "white";
-                button.background = "green";
-                button.onPointerDownObservable.add(function () {
-                    walkAnim.pause(true);
-                })
-                gui.addControl(button);
-                var button1 = BABYLON.GUI.Button.CreateSimpleButton("but0", "run");
-                button1.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
-                button1.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-                button1.left = "100px";
-                button1.width = "100px";
-                button1.height = "50px";
-                button1.color = "white";
-                button1.background = "green";
-                button1.onPointerDownObservable.add(function () {
-                    walkAnim.play(true);
-                })
-                gui.addControl(button1);
-                var slider = new BABYLON.GUI.Slider();
-                slider.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-                slider.minimum = 0;
-                slider.maximum = 1;
-                slider.color = "green";
-                 slider.value = 1;
-                slider.height = "20px";
-                slider.width = "205px";
-                gui.addControl(slider);
-                slider.onValueChangedObservable.add((v) => {
-                    walkParam.anim.setWeightForAllAnimatables(v);
-                    walkParam.weight = v;
-				// header.text = param.name + ":" + param.weight.toFixed(2);
-			})
-            // walkParam.anim._slider = slider;
-			// slider.value = walkParam.weight;
-                console.log(walkParam.weight)
-
+                // var button = BABYLON.GUI.Button.CreateSimpleButton("but0", "stop");
+                // button.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+                // button.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+                // button.paddingTop = "0px";
+                // button.width = "100px";
+                // button.height = "50px";
+                // button.color = "white";
+                // button.background = "green";
+                // button.onPointerDownObservable.add(function () {
+                //     walkAnim.pause(true);
+                // })
+                // gui.addControl(button);
+                // var button1 = BABYLON.GUI.Button.CreateSimpleButton("but0", "run");
+                // button1.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+                // button1.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+                // button1.left = "100px";
+                // button1.width = "100px";
+                // button1.height = "50px";
+                // button1.color = "white";
+                // button1.background = "green";
+                // button1.onPointerDownObservable.add(function () {
+                //     walkAnim.play(true);
+                // })
+                // gui.addControl(button1);        
             });
 
 
