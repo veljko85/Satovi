@@ -29,93 +29,460 @@
     <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
     <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
     <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
-<div style="width: 100vw; height: 100vh; background-color: black">
+<div id='container' style="width: 100%; height: 100%; background-color: rgb(255, 255, 255); background-image: url('bck/bckWhi.jpg'); background-size: cover;">
 
 <canvas id="renderCanvas" style="width: 100%; height: 100%; touch-action: none; text-align: center; outline: none !important; float: right"></canvas>
+<div id="screw" style="width: 100px; height: 100px; background-color: tomato; position: absolute; left: 160px;  background: url('screw.png'); background-size: cover;"></div>
+<div id="brand" style="width: 100px; height: 100px; background-color: rgb(95, 71, 255); position: absolute; left: 20px; background: url('logo2.png'); background-size: cover;"></div>
+<div id="wristband" style="width: 100px; height: 100px; background-color: rgb(95, 71, 255); position: absolute; left: 300px; background-size: cover;">WRISTBAND</div>
+
+<!-- <div id="bckgr" style="width: 300px; height: 300px; background-color: rgb(95, 71, 255); position: absolute; left: 100px; background: url('logo2.png'); background-size: cover;"></div> -->
+
+
+
+<div id='white' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 255, 255); position: absolute; right: 100px; top: 100px; background: url('balls/bomb.png'); background-size: cover;"></div>
+<div id='black' class='satColor' style="width: 100px; height: 100px; background-color: rgb(0, 0, 0); position: absolute; right: 0; top: 100px; background: url('balls/red.png'); background-size: cover;"></div>
+<div id='blue' class='satColor' style="width: 100px; height: 100px; background-color: rgb(17, 0, 255); position: absolute; right: 100px; top: 200px; background: url('balls/blue.png'); background-size: cover;"></div>
+<div id='orange' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 123, 0); position: absolute; right: 0; top: 200px; background: url('balls/orange.png'); background-size: cover;"></div>
+<div id='red' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 0, 0); position: absolute; right: 100px; top: 300px; background: url('balls/black.png'); background-size: cover;"></div>
+<div id='yellow' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 230, 0); position: absolute; right: 0; top: 300px; background: url('balls/white.png'); background-size: cover;"></div>
+
 </div>
         
 
 <script>
+    
     var canvas = document.getElementById("renderCanvas");
+    
+    var screw = document.getElementById('screw');
+    var brand = document.getElementById('brand');
+    var wristbandClick = document.getElementById('wristband')
+    
     var engine = null;
-        var scene = null;
-        var sceneToRender = null;
-        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
-        var createScene = function () {
+        
+    var scene = null;
+    var sceneToRender = null;
+    var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
+    var createScene = function () {
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
-    scene.environmentTexture = new BABYLON.CubeTexture("https://raw.githubusercontent.com/veljko85/glbModels/gh-pages/sladoled/env.env", scene);
+    
+    scene.environmentTexture = new BABYLON.CubeTexture("https://raw.githubusercontent.com/veljko85/environments/gh-pages/environment.env", scene);
 
-    // This creates and positions a free camera (non-mesh)
- var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 0, new BABYLON.Vector3(0, 0, 0), scene);
-            camera.setPosition(new BABYLON.Vector3(3, 5, -8));
-            camera.attachControl(canvas, true);
-camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius = 8;
+    var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 0, new BABYLON.Vector3(0, 0, 0), scene);
+    camera.setPosition(new BABYLON.Vector3(3, 5, -8));
+    camera.attachControl(canvas, true);
+    // camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius = 8;
+    camera.lowerRadiusLimit = 4;
+    camera.upperRadiusLimit = 8;
 
-var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 1), scene);
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 1), scene);
     var light2 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-1, -1, -1), scene);
-scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
-
     light.intensity = 0.7;
+    
+    scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
+
+    //get time
     var d = new Date();
-                var m = d.getMinutes();
-                var h = d.getHours();
-                var s = d.getSeconds();
-                var min = 1.555 - (m * 0.105);
-                var hou = 1.555 - ((h * 0.52) + (0.0095 * m));
-                var sec = 1.555 - (s * 0.105);
+    var m = d.getMinutes();
+    var h = d.getHours();
+    var s = d.getSeconds();
+    var min = 1.555 - (m * 0.105);
+    var hou = 1.555 - ((h * 0.52) + (0.0095 * m));
+    var sec = 1.555 - (s * 0.105);
    
   
-//   console.log(m)
-  
-    var gui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI");
-  var sat;
-            BABYLON.SceneLoader.ImportMeshAsync("", "https://raw.githubusercontent.com/veljko85/Satovi/gh-pages/", "sat.glb").then((result) => {   
-               sat = result.meshes[0];
-               let malaKazaljka = scene.getMeshByName("Sat.018");
-               let velikaKazaljka = scene.getMeshByName("Sat.008");
-               let sekundara = scene.getMeshByName("Sat.016");
-               let brand = scene.getMeshByName("Sat.017");
-               console.log(scene.getMeshByName("Sat.017"))
-               malaKazaljka.rotation = new BABYLON.Vector3(0, hou, 0);
+
+    //animatiions
+    function scalingMesh(startX, startY, startZ, endX, endY, endZ){
+        const anim= new BABYLON.Animation("animPosY", "scaling", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        anim.setKeys([
+            {frame: 0, value: new BABYLON.Vector3(startX, startY, startZ)},
+            {frame: 30, value: new BABYLON.Vector3(endX, endY, endZ)},
+        ]);
+        return anim;
+    }
+    function animPosY(pos, futPos){
+    const anim= new BABYLON.Animation("animPosY", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        anim.setKeys([
+            {frame: 0, value: pos},
+            {frame: 30, value: futPos},
+        ]);
+        return anim;
+    }
+    function animPosX(pos, futPos){
+    const anim= new BABYLON.Animation("animPosX", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        anim.setKeys([
+          {frame: 0, value: pos},
+          {frame: 30, value: futPos},
+        ]);
+        return anim;
+    }
+    function animRotX(){
+    const anim= new BABYLON.Animation("animRotX", "rotation.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        anim.setKeys([
+            {frame: 0, value: 0},
+            {frame: 30, value: 2 * Math.PI},
+        ]);
+        return anim;
+    }
+    function animMove(camera, pos) {
+        const anim = new BABYLON.Animation('movecam', 'position', 120, BABYLON.Animation.ANIMATIONTYPE_VECTOR3);
+        anim.setKeys([
+            {frame: 0, value: camera.position.clone()},
+            {frame: 120, value: pos},
+        ]);
+        // easing
+        const easingFun = new BABYLON.CubicEase();
+        easingFun.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
+        anim.setEasingFunction(easingFun);
+        return anim;
+    }
+    function animLookAt(lookAt) {
+        const anim = new BABYLON.Animation('lookcam', 'target', 120, BABYLON.Animation.ANIMATIONTYPE_VECTOR3);
+        anim.setKeys([
+            {frame: 0, value: new BABYLON.Vector3(0, 0, 0)},
+            {frame: 120, value: lookAt},
+        ]);
+        // easing 
+        const easingFun = new BABYLON.CubicEase();
+        easingFun.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
+        anim.setEasingFunction(easingFun);
+        return anim;
+    }
+
+
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+   
+
+
+    
+    //IMPORT WATCH
+    BABYLON.SceneLoader.ImportMeshAsync("", "https://raw.githubusercontent.com/veljko85/Satovi/gh-pages/", "sat.glb").then((result) => {   
+        var sat = result.meshes[0];
+        sat.scaling = new BABYLON.Vector3(-6,6,6);
+        sat.position = new BABYLON.Vector3(0, -8, 0);
+        //stop defaoul animation
+        scene.animationGroups.find(a => a.name === 'Curve.001Action').setWeightForAllAnimatables(0);
+        
+        //create screw part
+        var screwPart  = BABYLON.MeshBuilder.CreateCylinder(0, {height: 0.15, diameter: 0.1, tessellation: 48}, scene);
+        screwPart.addRotation(0, 0, 1.55);
+        screwPart.position = new BABYLON.Vector3(1, 1.13, -0.98 );
+        var screwMaterial = new BABYLON.PBRCustomMaterial("screwMaterial", scene);
+        screwMaterial.roughness =0.2;
+        screwMaterial.bumpTexture = new BABYLON.Texture("textures/screwTexture.png", scene);
+        screwMaterial.bumpTexture.hasAlpha = true;
+        screwMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+        screwMaterial.bumpTexture.uScale = 1;
+        screwMaterial.bumpTexture.vScale = 1;
+        screwMaterial.useParallax = true;
+        screwMaterial.useParallaxOcclusion = true;
+        screwMaterial.parallaxScaleBias = 1;
+        screwMaterial.specularPower = 1000.0;
+        screwMaterial.albedoColor = BABYLON.Color3.FromHexString('#808080');
+        screwPart.material = screwMaterial;
+
+        var screwPartObj = {
+            mesh: screwPart,
+            animationOn: false,
+        }
+
+        let malaKazaljka = scene.getMeshByName("Sat.018");
+        let velikaKazaljka = scene.getMeshByName("Sat.008");
+        let sekundara = scene.getMeshByName("Sat.016");
+        //set staritong positions of parts      
+        velikaKazaljka.position = new BABYLON.Vector3(0, -1.31, 0 );
+        malaKazaljka.position = new BABYLON.Vector3(0, 0.29, 0 );
+        sekundara.position = new BABYLON.Vector3(0, 0.295, 0 );
+
+        //set time on watch
+        malaKazaljka.rotation = new BABYLON.Vector3(0, hou, 0);
+        velikaKazaljka.rotation = new BABYLON.Vector3(0, min, 0);
+        sekundara.rotation = new BABYLON.Vector3(0, sec, 0);
+        //change time in seconds
+        setInterval(function(){
+            d = new Date();
+            m = d.getMinutes();
+            h = d.getHours(); 
+            s = d.getSeconds();
+            min = 1.555 - (m* 0.105);
+            hou = 1.555 - ((h * 0.52) + (0.0095 * m));
+            sec = 1.555 - (s * 0.105);
+            malaKazaljka.rotation = new BABYLON.Vector3(0, hou, 0);
             velikaKazaljka.rotation = new BABYLON.Vector3(0, min, 0);
             sekundara.rotation = new BABYLON.Vector3(0, sec, 0);
-            //    malaKazaljka.position = new BABYLON.Vector3(0, -8, 0);
-            setInterval(function(){
-                d = new Date();
-                m = d.getMinutes();
-                h = d.getHours(); 
-                s = d.getSeconds();
-                min = 1.555 - (m* 0.105);
-                hou = 1.555 - ((h * 0.52) + (0.0095 * m));
-                sec = 1.555 - (s * 0.105);
-                malaKazaljka.rotation = new BABYLON.Vector3(0, hou, 0);
-            velikaKazaljka.rotation = new BABYLON.Vector3(0, min, 0);
-            sekundara.rotation = new BABYLON.Vector3(0, sec, 0);
-            }, 1000);
-            
-                sat.scaling = new BABYLON.Vector3(-6,6,6);
-                sat.position = new BABYLON.Vector3(0, -8, 0);
-                // sat.stopAnimation(result.meshes[0]);
+        }, 1000);
 
-                var secAnim = scene.animationGroups.find(a => a.name === 'Curve.001Action');
-                var secParam = { name: "Walk", anim: secAnim, weight: 0 };
+        var sraf = {
+            mesh: scene.getMeshByName("Sat.015"),
+            animationOn: false,
+        }
+        sraf["mesh"].position.x = 0.193;
+        //gives animation possible on imported mesh
+        sraf["mesh"].rotationQuaternion = null
+        //give sraf material to be seen better
+        sraf["mesh"].material = screwMaterial;
+
+        var brandLogo = {
+            mesh: scene.getMeshByName("Sat.017"),
+            animationOn: false,
+        }
+        brandLogo["mesh"].position = new BABYLON.Vector3(0, 0.287, -0.081 );
+        brandLogo["mesh"].scaling = new BABYLON.Vector3(1.85, 1.85, 1.85 );
+
+        var wristband = {
+            mesh: [scene.getMeshByName("Sat.011_primitive0"),
+                scene.getMeshByName("Sat.011_primitive1"),
+                scene.getMeshByName("Sat.019_primitive0"),
+                scene.getMeshByName("Sat.019_primitive1")
+            ],
+            animationOn: false
+        }
+
+        //highlite
+        var hl = new BABYLON.HighlightLayer("hl1", scene);
+        hl.blurHorizontalSize = 1;
+
+        //text to show on click
+        var lineConectMeshAndText = new BABYLON.GUI.Line();
+        lineConectMeshAndText.lineWidth = 2;
+        lineConectMeshAndText.color = "white";
+        lineConectMeshAndText.y2 = 20;
+        lineConectMeshAndText.linkOffsetY = -20;
+        advancedTexture.addControl(lineConectMeshAndText);
+        // line3.linkWithMesh(scene.getMeshByName("Sat.004_primitive0")); 
+        lineConectMeshAndText.linkWithMesh(null)
+        lineConectMeshAndText.notRenderable = true;
+
+        var textHolder = new BABYLON.GUI.Rectangle();
+        textHolder.width = 0.2;
+        textHolder.height = "150px";
+        // textHolder.cornerRadius = 20;
+        textHolder.color = "White";
+        textHolder.thickness = 4;
+        textHolder.background = "white";
+        // textHolder.linkWithMesh(scene.getMeshByName("Sat.004_primitive0"));   
+        // textHolder.linkOffsetY = -250;
+        // textHolder.linkOffsetX = -150;
+        textHolder.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        textHolder.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+        textHolder.left = 100 + 'px'
+        advancedTexture.addControl(textHolder);
+        textHolder.notRenderable = true;
+
+        var text = new BABYLON.GUI.TextBlock();
+        text.color = 'black';
+        text.textWrapping = true;
+        text.text = "";
+        text.fontSize = "14px";
+        textHolder.addControl(text);
+        lineConectMeshAndText.connectedControl = textHolder;  
+
+        //function to focus on wristband
+        function focusWristband(){
+            const cameraLogoAnimations = [
+                animMove(camera, new BABYLON.Vector3(-0.001, -5, -10)),
+            ];
+            scene.beginDirectAnimation(camera, cameraLogoAnimations, 0, 120, false, 0.5);
+
+            for (let i = 0; i < wristband["mesh"].length; i++) {
+                hl.addMesh(wristband["mesh"][i], BABYLON.Color3.Teal());
+            }
+            if(!wristband["animationOn"]){
+                wristband["animationOn"] = true;
+                setTimeout(function(){ 
+                    lineConectMeshAndText.linkWithMesh(scene.getMeshByName("Sat.004_primitive0"));
+                    lineConectMeshAndText.notRenderable = false;
+                    textHolder.notRenderable = false;
+                    textHolder.left = 100 + 'px'
+                    textHolder.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                    textHolder.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+                    text.text = "The responsible Swiss watch championing peace, diversity and ecology which gives you the opportunity to be a part of the change you want to see. The “Ambassador of Change” Limited edition spearheads a new way of doing business in partnership with changemakers.";
+                }, 2000)
+                } else {
+                    blureWristband()
+                }
+            }
+                //function to blure wristband
+            function blureWristband(){
+                lineConectMeshAndText.linkWithMesh(null)
+                lineConectMeshAndText.notRenderable = true;
+                textHolder.notRenderable = true;
+
+                for (let i = 0; i < wristband["mesh"].length; i++) {
+                        hl.removeMesh(wristband["mesh"][i]);
+                }
+
+                const cameraLogoAnimations = [
+                    animMove(camera, new BABYLON.Vector3(3, 5, -8)),
+                ];
+                scene.beginDirectAnimation(camera, cameraLogoAnimations, 0, 120, false, 0.5);
+                wristband["animationOn"] = false;
+            }
+            //function to focus on brand logo
+            function focusBrandLogo(){
+                hl.addMesh(brandLogo["mesh"], BABYLON.Color3.Teal());
+                const cameraLogoAnimations = [
+                    animMove(camera, new BABYLON.Vector3(-0.001, 5.28, -2.35)),
+                ];
+                const logoAnimations = [
+                    scalingMesh(1.85, 1.85, 1.85, 5, 5, 5),
+                    animPosY(0.287, 0.35),
+                ];
+
+                if(!brandLogo["animationOn"]){
+                    brandLogo["animationOn"] = true;
+                    scene.beginDirectAnimation(camera, cameraLogoAnimations, 0, 120, false, 0.5);
+                    scene.beginDirectAnimation(brandLogo["mesh"], logoAnimations, 0, 30, false, 1)
+                    setTimeout(function(){         
+                        lineConectMeshAndText.linkWithMesh(brandLogo["mesh"]);
+                        lineConectMeshAndText.notRenderable = false;
+                        textHolder.notRenderable = false;
+                        textHolder.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                        textHolder.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+                        textHolder.left = 100 + 'px'
+                        text.text = "The responsible Swiss watch championing peace, diversity and ecology which gives you the opportunity to be a part of the change you want to see. The “Ambassador of Change” Limited edition spearheads a new way of doing business in partnership with changemakers.";
+                    }, 2000)
+                } else {
+                    blureBrandLogo()
+                }
+            }
+            //function to blure brand logo
+            function blureBrandLogo(){
+                lineConectMeshAndText.linkWithMesh(null)
+                lineConectMeshAndText.notRenderable = true;
+                textHolder.notRenderable = true;
+                hl.removeMesh(brandLogo["mesh"]);
+                const cameraLogoAnimations = [
+                    animMove(camera, new BABYLON.Vector3(3, 5, -8)),
+                ];
+                const logoAnimations = [
+                    scalingMesh(1.85, 1.85, 1.85, 5, 5, 5),
+                    animPosY(0.287, 0.35),
+                ];
+                if(brandLogo["animationOn"]){
+                    scene.beginDirectAnimation(camera, cameraLogoAnimations, 0, 120, false, 0.5);
+                    scene.beginDirectAnimation(brandLogo["mesh"], logoAnimations, 30, 0, false, 1)
+                }
+                brandLogo["animationOn"] = false;
+            }
+            function focusScrew(){
+                hl.addMesh(sraf["mesh"], BABYLON.Color3.Teal());
+                hl.addMesh(screwPartObj["mesh"], BABYLON.Color3.Teal());
+
+                const posAnimationsMain = [
+                    animRotX(),
+                    animPosX(0.193, 0.22),
+                ];
+                const posAnimations = [
+                    animRotX(),
+                    animPosX(1, 1.16),
+                ];
+                    
+                const screwCameraAnimations = [
+                        animMove(camera, new BABYLON.Vector3(3, 3, -3)),
+                ];
+
+                if(!sraf["animationOn"]){
+                    sraf["animationOn"] = true;
+                    scene.beginDirectAnimation(camera, screwCameraAnimations, 0, 120, false, 0.5);
+                    setTimeout(function(){ 
+                        scene.beginDirectAnimation(screwPartObj["mesh"], posAnimations, 0, 30, false, 1);
+                        scene.beginDirectAnimation(sraf["mesh"], posAnimationsMain, 0, 30, false, 1);
+                    }, 1000);
+                    setTimeout(function(){         
+                        lineConectMeshAndText.linkWithMesh(sraf["mesh"]);
+                        lineConectMeshAndText.notRenderable = false;
+                        textHolder.notRenderable = false;
+                        textHolder.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                        textHolder.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+                        textHolder.left = -100 + 'px'
+                        text.text = "The responsible Swiss watch championing peace, diversity and ecology which gives you the opportunity to be a part of the change you want to see. The “Ambassador of Change” Limited edition spearheads a new way of doing business in partnership with changemakers.";
+                    }, 2000)
+                } else {
+                    blureScrew()
+                }
+            }
+            //function to blure brand logo
+            function blureScrew(){
+                lineConectMeshAndText.linkWithMesh(null)
+                lineConectMeshAndText.notRenderable = true;
+                textHolder.notRenderable = true;
+                hl.removeMesh(sraf["mesh"]);
+                hl.removeMesh(screwPartObj["mesh"]);
+                const cameraLogoAnimations = [
+                    animMove(camera, new BABYLON.Vector3(3, 5, -8)),
+                ];
+                const posAnimationsMain = [
+                    animRotX(),
+                    animPosX(0.193, 0.22),
+                ];
+                const posAnimations = [
+                    animRotX(),
+                    animPosX(1, 1.16),
+                ];
+                if(sraf["animationOn"]){
+                    scene.beginDirectAnimation(camera, cameraLogoAnimations, 0, 120, false, 0.5);
+                    scene.beginDirectAnimation(sraf["mesh"], posAnimationsMain,30, 0, false, 1)
+                    scene.beginDirectAnimation(screwPartObj["mesh"], posAnimations,30, 0, false, 1)
+                }
+                sraf["animationOn"] = false;
+            }
                 
-               secAnim.play(false);
-                secAnim.pause(true);
+            brand.addEventListener('click', function(){
+                blureWristband()
+                blureScrew()
+                focusBrandLogo()
+            })
                 
-                secAnim.setWeightForAllAnimatables(1);      
-            });
+            wristbandClick.addEventListener('click', function(){
+                blureBrandLogo()
+                blureScrew()
+                focusWristband()
+            })
 
-    //         const mat = BABYLON.Matrix.RotationY(-90 * Math.PI / 180);
-    // const tempMat = new BABYLON.Matrix();
+            screw.addEventListener('click', function(){
+                blureBrandLogo()
+                blureWristband()
+                focusScrew()
+            })
+                
+            var container = document.getElementById('container');
+            var white = document.getElementById('white');
+            var black = document.getElementById('black');
+            var blue = document.getElementById('blue');
+            var orange = document.getElementById('orange');
+            var red = document.getElementById('red');
+            var yellow = document.getElementById('yellow');
+            var satColor = document.getElementsByClassName('satColor');
+            var colors = ['#dfe6e9', '#2d3436', '#0984e3', '#e17055', '#d63031', '#fdcb6e'];
+            var bck = ["url('bck/bckBomb1.jpg')", "url('bck/bckRed.jpg')", "url('bck/bckWhi.jpg')", "url('bck/bckBlu.jpg')", "url('bck/bckOra.jpg')", "url('bck/bckBla.jpg')", "url('bck/bckYel.jpg')"];
+            var wristTexture = ["textures/TextureBomba1.png", "textures/wristband_red1.png"]
 
-    // scene.environmentTexture.getReflectionTextureMatrix = () => {
-    //     const camMat = camera.getViewMatrix();
-    //     camMat.multiplyToRef(mat, tempMat);
-    //     return tempMat;
-    // }
+            for (let i = 0; i < wristTexture.length + 1; i++) {
+                satColor[i].addEventListener('click', function(){  
+                    var satMaterial = new BABYLON.StandardMaterial("satMaterial", scene);
+                    satMaterial.diffuseTexture = new BABYLON.Texture(wristTexture[i], scene);
+                    satMaterial.bumpTexture = scene.getMaterialByID("Fabric Outside").bumpTexture;
+                    satMaterial.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+                    if(i != 2){
+                        scene.getMeshByName("Sat.011_primitive0").material = satMaterial;
+                        scene.getMeshByName("Sat.019_primitive0").material = satMaterial;
+                    } else {
+                        scene.getMeshByName("Sat.011_primitive0").material = scene.getMaterialByID("Fabric Outside");
+                        scene.getMeshByName("Sat.019_primitive0").material = scene.getMaterialByID("Fabric Outside");
+                    }
+                    container.style.backgroundImage = bck[i];
+                })
+            }
+    });
 
+//rotate scene
+    scene.onBeforeCameraRenderObservable.add(()=>{
+        scene.activeCamera.alpha += .002;
+    })
 
     return scene;
 };
