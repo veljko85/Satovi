@@ -29,23 +29,23 @@
     <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
     <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
     <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
-<div id='container' style="width: 100%; height: 100%; background-color: rgb(255, 255, 255); background-image: url('bck/bckWhi.jpg'); background-size: cover;">
+<div id='container' style="width: 100%; height: 100%; background-color: rgb(255, 255, 255); background-image: url('bck/bckBla.jpg'); background-size: cover;">
 
 <canvas id="renderCanvas" style="width: 100%; height: 100%; touch-action: none; text-align: center; outline: none !important; float: right"></canvas>
 <div id="screw" style="width: 100px; height: 100px; background-color: tomato; position: absolute; left: 160px;  background: url('img/screw.png'); background-size: cover;"></div>
 <div id="brand" style="width: 100px; height: 100px; background-color: rgb(95, 71, 255); position: absolute; left: 20px; background: url('img/logo2.png'); background-size: cover;"></div>
-<div id="wristband" style="width: 100px; height: 100px; background-color: rgb(95, 71, 255); position: absolute; left: 300px; background-size: cover;">WRISTBAND</div>
+<div id="wristband" style="width: 100px; height: 100px; background-color: rgb(95, 71, 255); position: absolute; left: 300px; background: url('img/wristbands.png'); background-size: cover;"></div>
 
 <!-- <div id="bckgr" style="width: 300px; height: 300px; background-color: rgb(95, 71, 255); position: absolute; left: 100px; background: url('logo2.png'); background-size: cover;"></div> -->
 
 
 
-<div id='white' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 255, 255); position: absolute; right: 100px; top: 100px; background: url('balls/bomb.png'); background-size: cover;"></div>
-<div id='black' class='satColor' style="width: 100px; height: 100px; background-color: rgb(0, 0, 0); position: absolute; right: 0; top: 100px; background: url('balls/red.png'); background-size: cover;"></div>
-<div id='blue' class='satColor' style="width: 100px; height: 100px; background-color: rgb(17, 0, 255); position: absolute; right: 100px; top: 200px; background: url('balls/blue.png'); background-size: cover;"></div>
-<div id='orange' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 123, 0); position: absolute; right: 0; top: 200px; background: url('balls/orange.png'); background-size: cover;"></div>
-<div id='red' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 0, 0); position: absolute; right: 100px; top: 300px; background: url('balls/black.png'); background-size: cover;"></div>
-<div id='yellow' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 230, 0); position: absolute; right: 0; top: 300px; background: url('balls/white.png'); background-size: cover;"></div>
+<div id='white' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 255, 255); position: absolute; right: 100px; top: 100px; background: url('balls/bombBallWrsitband.png'); background-size: cover;"></div>
+<div id='black' class='satColor' style="width: 100px; height: 100px; background-color: rgb(0, 0, 0); position: absolute; right: 0; top: 100px; background: url('balls/redBallWrsitband.png'); background-size: cover;"></div>
+<div id='blue' class='satColor' style="width: 100px; height: 100px; background-color: rgb(17, 0, 255); position: absolute; right: 100px; top: 200px; background: url('balls/whiteBallWrsitband.png'); background-size: cover;"></div>
+<div id='orange' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 123, 0); position: absolute; right: 0; top: 200px; background: url('balls/blackBallWrsitband.png'); background-size: cover;"></div>
+<div id='red' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 0, 0); position: absolute; right: 100px; top: 300px; background: url('balls/bombWatch.png'); background-size: cover;"></div>
+<div id='yellow' class='satColor' style="width: 100px; height: 100px; background-color: rgb(255, 230, 0); position: absolute; right: 0; top: 300px; background: url('balls/bombEarthWrsitband.png'); background-size: cover;"></div>
 
 </div>
         
@@ -152,7 +152,7 @@
     }
 
 
-    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+    
 
    
 
@@ -245,6 +245,8 @@
         var hl = new BABYLON.HighlightLayer("hl1", scene);
         hl.blurHorizontalSize = 1;
 
+        var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
         //text to show on click
         var lineConectMeshAndText = new BABYLON.GUI.Line();
         lineConectMeshAndText.lineWidth = 2;
@@ -285,10 +287,11 @@
             const cameraLogoAnimations = [
                 animMove(camera, new BABYLON.Vector3(-0.001, -5, -10)),
             ];
+            
             scene.beginDirectAnimation(camera, cameraLogoAnimations, 0, 120, false, 0.5);
 
             for (let i = 0; i < wristband["mesh"].length; i++) {
-                hl.addMesh(wristband["mesh"][i], BABYLON.Color3.Teal());
+                hl.addMesh(wristband["mesh"][i], BABYLON.Color3.White());
             }
             if(!wristband["animationOn"]){
                 wristband["animationOn"] = true;
@@ -300,7 +303,7 @@
                     textHolder.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
                     textHolder.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
                     text.text = "The responsible Swiss watch championing peace, diversity and ecology which gives you the opportunity to be a part of the change you want to see. The “Ambassador of Change” Limited edition spearheads a new way of doing business in partnership with changemakers.";
-                }, 2000)
+                }, 1000)
                 } else {
                     blureWristband()
                 }
@@ -323,7 +326,7 @@
             }
             //function to focus on brand logo
             function focusBrandLogo(){
-                hl.addMesh(brandLogo["mesh"], BABYLON.Color3.Teal());
+                hl.addMesh(brandLogo["mesh"], BABYLON.Color3.White());
                 const cameraLogoAnimations = [
                     animMove(camera, new BABYLON.Vector3(-0.001, 5.28, -2.35)),
                 ];
@@ -344,7 +347,7 @@
                         textHolder.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
                         textHolder.left = 100 + 'px'
                         text.text = "The responsible Swiss watch championing peace, diversity and ecology which gives you the opportunity to be a part of the change you want to see. The “Ambassador of Change” Limited edition spearheads a new way of doing business in partnership with changemakers.";
-                    }, 2000)
+                    }, 1000)
                 } else {
                     blureBrandLogo()
                 }
@@ -369,8 +372,8 @@
                 brandLogo["animationOn"] = false;
             }
             function focusScrew(){
-                hl.addMesh(sraf["mesh"], BABYLON.Color3.Teal());
-                hl.addMesh(screwPartObj["mesh"], BABYLON.Color3.Teal());
+                hl.addMesh(sraf["mesh"], BABYLON.Color3.White());
+                hl.addMesh(screwPartObj["mesh"], BABYLON.Color3.White());
 
                 const posAnimationsMain = [
                     animRotX(),
@@ -400,7 +403,7 @@
                         textHolder.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
                         textHolder.left = -100 + 'px'
                         text.text = "The responsible Swiss watch championing peace, diversity and ecology which gives you the opportunity to be a part of the change you want to see. The “Ambassador of Change” Limited edition spearheads a new way of doing business in partnership with changemakers.";
-                    }, 2000)
+                    }, 1000)
                 } else {
                     blureScrew()
                 }
@@ -436,18 +439,58 @@
                 blureScrew()
                 focusBrandLogo()
             })
-                
+
+            // scene.getMeshByName("Sat.003").actionManager = new BABYLON.ActionManager(scene);
+            // scene.getMeshByName("Sat.003").actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, function () {
+            //     blureWristband()
+            //     blureScrew()
+            //     focusBrandLogo()
+	        // }));
+
             wristbandClick.addEventListener('click', function(){
                 blureBrandLogo()
                 blureScrew()
                 focusWristband()
             })
 
+            // for (let i = 0; i < wristband["mesh"].length; i++) {
+            //     wristband["mesh"][i].actionManager = new BABYLON.ActionManager(scene);
+            //     wristband["mesh"][i].actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, function () {
+            //         blureBrandLogo()
+            //         blureScrew()
+            //         focusWristband()
+            //     }));
+            // }
+
+            // var button1 = new BABYLON.GUI.Ellipse();;
+            // button1.width = 0.02;
+            // button1.height = 0.04;
+            // button1.color = "lightgray";
+            // button1.cornerRadius =100;
+            // button1.background = "white";
+            // button1.left = '100px';
+            // button1.linkOffsetY = 0;
+            // button1.linkOffsetX = 50;
+            // button1.onPointerClickObservable.add(function() {
+            //     blureBrandLogo()
+            //     blureWristband()
+            //     focusScrew()
+            // });
+            // advancedTexture.addControl(button1);
+            // button1.linkWithMesh(sraf["mesh"]);
+            
             screw.addEventListener('click', function(){
                 blureBrandLogo()
                 blureWristband()
                 focusScrew()
             })
+
+            // sraf["mesh"].actionManager = new BABYLON.ActionManager(scene);
+            // sraf["mesh"].actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, function () {
+            //     blureBrandLogo()
+            //     blureWristband()
+            //     focusScrew()
+	        // }));
                 
             var container = document.getElementById('container');
             var white = document.getElementById('white');
@@ -459,22 +502,94 @@
             var satColor = document.getElementsByClassName('satColor');
             var colors = ['#dfe6e9', '#2d3436', '#0984e3', '#e17055', '#d63031', '#fdcb6e'];
             var bck = ["url('bck/bckBomb1.jpg')", "url('bck/bckRed.jpg')", "url('bck/bckWhi.jpg')", "url('bck/bckBlu.jpg')", "url('bck/bckOra.jpg')", "url('bck/bckBla.jpg')", "url('bck/bckYel.jpg')"];
-            var wristTexture = ["textures/TextureBomba1.png", "textures/wristband_red1.png"]
-
+            var wristTexture = ["textures/TextureBomba1.png", "textures/wristband_red1.png", "textures/wristband_white.png"]
+            var origColorBrushed_Bake = scene.getMaterialByID("Brushed_Bake").albedoColor;
+            var origColorBrushedVertical001 = scene.getMaterialByID("Brushed Vertical.001").albedoColor;
+            var origColorBrushed = scene.getMaterialByID("Brushed").albedoColor;
+            var origColorCrvenaPlastika = scene.getMaterialByID("Crvena plastika").albedoColor;
+            var origColorCrvenaPlastika001 = scene.getMaterialByID("Crvena plastika.001").albedoColor;
+            var origColorCrvenaPlastika002 = scene.getMaterialByID("Crvena plastika.002").albedoColor;
+            var origColorLeather = scene.getMaterialByID("Leather").albedoColor;
+            var origColorCrnaPlastika = scene.getMaterialByID("Crna plastika").albedoColor;
+            var origColorMaterial = scene.getMaterialByID("Material").albedoColor;
+            var cuculjakMaterial = new BABYLON.StandardMaterial("satMaterial", scene);
+            cuculjakMaterial.diffuseColor = BABYLON.Color3.FromHexString('#000000');
+            var kazaljkeGoldMat = new BABYLON.StandardMaterial("satMaterial", scene);
+            kazaljkeGoldMat.diffuseColor = BABYLON.Color3.FromHexString('#FFED8A');
+            
             for (let i = 0; i < wristTexture.length + 1; i++) {
                 satColor[i].addEventListener('click', function(){  
                     var satMaterial = new BABYLON.StandardMaterial("satMaterial", scene);
                     satMaterial.diffuseTexture = new BABYLON.Texture(wristTexture[i], scene);
                     satMaterial.bumpTexture = scene.getMaterialByID("Fabric Outside").bumpTexture;
                     satMaterial.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-                    if(i != 2){
+                    if(i == 0){
                         scene.getMeshByName("Sat.011_primitive0").material = satMaterial;
                         scene.getMeshByName("Sat.019_primitive0").material = satMaterial;
+                        scene.getMeshByName("Sat.013").material = cuculjakMaterial;
+                        scene.getMaterialByID("Material").albedoColor = origColorMaterial;
+                        scene.getMaterialByID("Leather").albedoColor = BABYLON.Color3.FromHexString('#ffcc00');
+                        scene.getMaterialByID("Crna plastika").albedoColor = scene.getMaterialByID("Material").albedoColor;
+                        scene.getMaterialByID("Brushed_Bake").albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        scene.getMaterialByID("Brushed Vertical.001").albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        screwMaterial.albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        scene.getMaterialByID("Brushed").albedoColor = BABYLON.Color3.FromHexString('#ffcc00');
+                        scene.getMaterialByID("Crvena plastika").albedoColor = BABYLON.Color3.FromHexString('#ffcc00');
+                        scene.getMaterialByID("Crvena plastika.001").albedoColor = BABYLON.Color3.FromHexString('#ffcc00');
+                        scene.getMaterialByID("Crvena plastika.002").albedoColor = BABYLON.Color3.FromHexString('#ffcc00');
+                        malaKazaljka.material = scene.getMaterialByID("Material");
+                        velikaKazaljka.material = scene.getMaterialByID("Material");
+                    }  else if (i == 1){
+                        scene.getMeshByName("Sat.011_primitive0").material = satMaterial;
+                        scene.getMeshByName("Sat.019_primitive0").material = satMaterial;
+                        scene.getMeshByName("Sat.013").material =  scene.getMaterialByID("Brushed");
+                        scene.getMaterialByID("Material").albedoColor = origColorMaterial;
+                        scene.getMaterialByID("Leather").albedoColor = origColorLeather;
+                        scene.getMaterialByID("Crna plastika").albedoColor = origColorCrnaPlastika;
+                        scene.getMaterialByID("Brushed_Bake").albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        scene.getMaterialByID("Brushed Vertical.001").albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        screwMaterial.albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        scene.getMaterialByID("Brushed").albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        scene.getMaterialByID("Crvena plastika").albedoColor = origColorCrvenaPlastika;
+                        scene.getMaterialByID("Crvena plastika.001").albedoColor = origColorCrvenaPlastika001;
+                        scene.getMaterialByID("Crvena plastika.002").albedoColor = origColorCrvenaPlastika002;
+                        malaKazaljka.material = scene.getMaterialByID("Crna plastika");
+                        velikaKazaljka.material = scene.getMaterialByID("Crna plastika");
+                    }  else if (i == 2){
+                        scene.getMeshByName("Sat.011_primitive0").material = satMaterial;
+                        scene.getMeshByName("Sat.019_primitive0").material = satMaterial;
+                        scene.getMeshByName("Sat.013").material =  scene.getMaterialByID("Brushed");
+                        scene.getMaterialByID("Material").albedoColor = BABYLON.Color3.FromHexString('#FFED8A');
+                        scene.getMaterialByID("Leather").albedoColor = origColorLeather;
+                        scene.getMaterialByID("Crna plastika").albedoColor = origColorCrnaPlastika;
+                        scene.getMaterialByID("Brushed_Bake").albedoColor = BABYLON.Color3.FromHexString('#FFED8A');
+                        scene.getMaterialByID("Brushed Vertical.001").albedoColor = BABYLON.Color3.FromHexString('#FFED8A');
+                        screwMaterial.albedoColor = BABYLON.Color3.FromHexString('#FFED8A');
+                        scene.getMaterialByID("Brushed").albedoColor = BABYLON.Color3.FromHexString('#FFED8A');
+                        scene.getMaterialByID("Crvena plastika").albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        scene.getMaterialByID("Crvena plastika.001").albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        scene.getMaterialByID("Crvena plastika.002").albedoColor = BABYLON.Color3.FromHexString('#000000');
+                        malaKazaljka.material = scene.getMaterialByID("Brushed Vertical.001");
+                        velikaKazaljka.material = scene.getMaterialByID("Brushed Vertical.001");
                     } else {
                         scene.getMeshByName("Sat.011_primitive0").material = scene.getMaterialByID("Fabric Outside");
                         scene.getMeshByName("Sat.019_primitive0").material = scene.getMaterialByID("Fabric Outside");
+                        scene.getMaterialByID("Material").albedoColor = origColorMaterial;
+                        scene.getMeshByName("Sat.013").material =  scene.getMaterialByID("Brushed");
+                        scene.getMaterialByID("Leather").albedoColor = origColorLeather;
+                        scene.getMaterialByID("Crna plastika").albedoColor = origColorCrnaPlastika;
+                        scene.getMaterialByID("Brushed_Bake").albedoColor = origColorBrushed_Bake;
+                        screwMaterial.albedoColor = BABYLON.Color3.FromHexString('#808080');
+                        scene.getMaterialByID("Brushed Vertical.001").albedoColor = origColorBrushedVertical001;
+                        scene.getMaterialByID("Brushed").albedoColor = origColorBrushed;
+                        scene.getMaterialByID("Crvena plastika").albedoColor = origColorCrvenaPlastika;
+                        scene.getMaterialByID("Crvena plastika.001").albedoColor = origColorCrvenaPlastika001;
+                        scene.getMaterialByID("Crvena plastika.002").albedoColor = origColorCrvenaPlastika002;
+                        malaKazaljka.material = scene.getMaterialByID("Crna plastika");
+                        velikaKazaljka.material = scene.getMaterialByID("Crna plastika");
                     }
-                    container.style.backgroundImage = bck[i];
+                    // container.style.backgroundImage = bck[i];
+                    // container.style.backgroundImage = "url('bck/bckBla.jpg')";
                 })
             }
     });

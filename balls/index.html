@@ -51,12 +51,13 @@
     const camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), scene);
     camera.attachControl(canvas, true);
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene);
-
+    // const light2 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(-1, -1, 0), scene);
+            
     const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {});
 
     var satMaterial = new BABYLON.StandardMaterial("bridgeLayoutMat", scene);
     // satMaterial.diffuseColor = new BABYLON.Color3.FromHexString('#ff0000');
-                        satMaterial.diffuseTexture = new BABYLON.Texture("bombBackBack1.png", scene);
+                        satMaterial.diffuseTexture = new BABYLON.Texture("redWrap3.png", scene);
                         // satMaterial.diffuseTexture = new BABYLON.Texture("./textures/leather-texture.jpg", scene);
                         // satMaterial.roughness =0.5;
                         // // satMaterial.albedoTexture = new BABYLON.Texture("leather-texture.jpg", scene);
